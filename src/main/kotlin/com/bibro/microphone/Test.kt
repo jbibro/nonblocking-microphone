@@ -1,16 +1,12 @@
 package com.bibro.microphone
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.time.Duration
-import java.util.concurrent.Executors
 
-fun main() {
-    val dispatcher = Executors.newFixedThreadPool(1).asCoroutineDispatcher()
-
-    CoroutineScope(dispatcher).launch {
+fun main() = runBlocking<Unit> {
+    launch {
         Signal
             .capture(
                 sampleRate = 44100f,
@@ -24,12 +20,10 @@ fun main() {
             .play()
     }
 
-    CoroutineScope(dispatcher).launch {
+    launch {
         delay(2000)
         println("I'm free while capturing microphone - ${Thread.currentThread().name}")
         delay(5000)
         println("I'm free while playing - ${Thread.currentThread().name}")
     }
-
-    Thread.sleep(100000)
 }
