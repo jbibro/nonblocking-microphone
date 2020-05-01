@@ -1,6 +1,7 @@
 package com.bibro.microphone.nonblocking
 
 import com.bibro.microphone.Signal
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import java.time.Duration
 import javax.sound.sampled.AudioFormat
@@ -11,6 +12,11 @@ class Recording(
     private val sampleSize: Int,
     private val duration: Duration
 ) {
+
+    suspend fun startAsync() = coroutineScope {
+        async { start() }
+    }
+
     suspend fun start() = coroutineScope {
         val format = AudioFormat(
             sampleRate,
